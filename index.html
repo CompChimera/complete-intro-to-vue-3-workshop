@@ -4,7 +4,38 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Shangri-La Frontier</title>
   </head>
-  <body></body>
+  <body>
+    <h1>Shangri-La Frontier Characters</h1>
+    <div id="app">
+      <p v-if="charactersList.length > 0">Main Characters: </p>
+      <p v-else>To be announced!</p>
+      <ul>
+        <li v-if="charactersList.length > 0" v-for="character in charactersList">
+          <span v-for="(value, key) in character">{{ key[0].toUpperCase() + key.substring(1) }} : {{ value }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      const { createApp } = Vue
+      let characters = [
+          { name: 'Rakuro', bio: 'In game name - Sunraku'},
+          { name: 'Towa', bio: 'In game name: Authur Pencilgon' },
+          { name: 'Rei', bio: 'In game name: Psyger-0' },
+          { name: 'Kei', bio: 'In game name: Oikatzo' }
+        ]
+
+        // let characters = []
+      const app = createApp({
+        data: () => ({
+            charactersList: characters
+        })
+      })
+      
+      app.mount('#app')
+    </script>
+  </body>
 </html>
