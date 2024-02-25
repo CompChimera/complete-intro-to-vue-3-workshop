@@ -8,17 +8,42 @@
   </head>
   <body>
     <div id="app">
+      <h1>Avatar: The Last Airbender Characters</h1>
       <p v-if="characterList.length === 0">There are no characters</p>
-      <ul v-else-if="characterList.length % 2 === 0">
-        <li v-for="character in characterList">{{ character.name }}</li>
+      <ul v-else-if="characterList.length > 0">
+        <li v-for="character in characterList">
+          <span>{{ character.name }}</span>
+          <button @click="favouriteFlag(character, $event)" style="margin-left: 20px; margin-top: 20px;"> Favourite </button>
+          </li>
       </ul>
-      <p>
-        <span v-for="(character, index) in characterList"
-          >{{ character.name }}{{ index === characterList.length - 1 ? '' : ', '
-          }}
-        </span>
-      </p>
-      <p v-else>There are odd characters!</p>
+      <div>
+        <h2>New Character</h2>
+        <label for="character-name">
+          <input type="text" v-model="newCharacter.name" @keyup.enter="addNewCharacter"/>
+      </div>
+      <div class="list-wrapper" style="display: flex; flex-direction: column; max-width: 500px; gap: 20px;">
+        <div class="char-list" style="background-color: #999; padding: 10px;">
+          <span style="font-weight: bold;">List of Characters:</span>
+          <p>
+            <span v-for="(character, index) in characterList">
+               {{ character.name }}{{ index === characterList.length - 1 ? '' : ', ' }} 
+              </span>
+          </p>
+        </div>
+        <div class="fav-list" style="background-color: #999; padding: 10px;">
+          <span style="font-weight: bold;">List of Favourite Characters:</span>
+          <p>
+            <span v-if="favouriteList.length > 0" v-for="(character, index) in favouriteList">
+               {{ character.name }}{{ index === favouriteList.length - 1 ? '' : ', ' }} 
+              </span>
+              <span v-else>There are no favourites :( </span>
+          </p>
+        </div>
+      </div> <!-- End List wrapper-->
+
+
+
+      <!-- <p v-else>There are odd characters!</p> -->
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -38,8 +63,22 @@
             {
               name: 'Katara'
             }
-          ]
-        })
+          ],
+          newCharacter : {
+            name: ''
+          },
+          favouriteList: []
+        }),
+        methods: {
+          favouriteFlag(favouriteAdd, event) {
+              this.favouriteList.push(favouriteAdd) 
+          },
+          addNewCharacter() {
+            this.characterList.push(this.newCharacter)
+            this.newCharacter = { name: '' }
+          }
+        },
+
       }).mount('#app')
     </script>
   </body>
