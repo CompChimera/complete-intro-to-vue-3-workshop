@@ -1,0 +1,11 @@
+{
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "workbench.colorCustomizations": {
+      "seditor.selectionBackground": "#0000ff",
+      "seditorError.foreground": "#00000000",
+      "seditorWarning.foreground": "#00000000",
+      "seditorInfo.foreground": "#00000000",
+    },
+    "window.title": "FEM - Vue"
+  }
