@@ -1,18 +1,21 @@
 <script >
-import CharacterList from './components/CharacterList.vue'
+import CharacterCard from './components/CharacterCard.vue'
+import AddCharacter from './components/AddCharacter.vue'
 
 
 export default {
     data: () => ({
-        // charactersList: [
-        //     { name: 'Rakuro', bio: 'In game name - Sunraku', powers: ['speed', 'strength'] },
-        //     { name: 'Towa', bio: 'In game name: Authur Pencilgon', powers: ['strength', 'friendship'] },
-        //     { name: 'Rei', bio: 'In game name: Psyger-0', powers: ['strength   ', 'speed', 'cunning'] },
-        //     { name: 'Kei', bio: 'In game name: Oikatzo', powers: ['cunning', 'speed', 'famous'] }
-        // ],
-        charactersList: [],
+        charactersList: [
+            { name: 'Rakuro', bio: 'In game name - Sunraku', powers: ['speed', 'strength'] },
+            { name: 'Towa', bio: 'In game name: Authur Pencilgon', powers: ['strength', 'friendship'] },
+            { name: 'Rei', bio: 'In game name: Psyger-0', powers: ['strength   ', 'speed', 'cunning'] },
+            { name: 'Kei', bio: 'In game name: Oikatzo', powers: ['cunning', 'speed', 'famous'] }
+        ],
+        // charactersList: [],
         newCharacter: {
-            name: ''
+            name: '',
+            bio: '',
+            powers: []
         },
         favouriteList: []
     }),
@@ -36,13 +39,15 @@ export default {
         }
     },
     methods: {
-
         addNewCharacter() {
             this.charactersList.push(this.newCharacter);
             this.newCharacter = { name: '' };
+        },
+        addFavouriteCharacter(character) {
+            this.favouriteList.push(character);
         }
     },
-    components: { CharacterList }
+    components: { CharacterCard, AddCharacter, }
 }
 </script>
 
@@ -52,17 +57,18 @@ export default {
 <ul>
   <li v-for="(stat, type) in powerStatistics" :key="`character-${stat}-${type}`"> <span>{{ type[0].toUpperCase() + type.substring(1) }} : {{ stat }} </span></li>
 </ul>
-<CharacterList :charactersList="charactersList" :favouriteList="favouriteList"/>
 
-<h2>New Character (Limited to names)</h2>
-<div class="new-char__wrapper" style="padding: 20px; border: 1px solid black'">
-  <label for="character-name">Name: </label>
-  <input
-    type="text"
-    v-model="newCharacter.name"
-    @keyup.enter="addNewCharacter"
-  />
-</div>
+<h2 v-if="charactersList.length > 0">Main Characters: </h2>
+  <h2 v-else>Characters: To be announced!</h2>
+  <div>
+
+    <div v-if="charactersList.length > 0" v-for="(character, index) in charactersList" :key="`character-${index}`"> 
+      <CharacterCard :character="character" @favourite="addFavouriteCharacter"/>
+    </div> 
+  </div>
+
+<AddCharacter :charactersList="charactersList" :newCharacter="newCharacter" @add-new-character="addNewCharacter"/>
+
 <div class="list-wrapper" 
 style="display: flex; flex-direction: column; max-width: 500px; gap: 20px;">
   <div class="char-list" style="background-color: #d3d3d3; padding: 10px;">
@@ -84,3 +90,16 @@ style="display: flex; flex-direction: column; max-width: 500px; gap: 20px;">
   </div>
 </div> <!-- End List wrapper-->
 </template>
+
+<style>
+label {
+  font-weight: bold;
+}
+input {
+  margin: 5px;
+}
+
+.disabled {
+  color: rgb(150, 150, 150);
+}
+</style>
