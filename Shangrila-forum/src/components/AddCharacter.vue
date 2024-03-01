@@ -43,7 +43,6 @@ export default {
         <input disabled type="checkbox" name="character_power" value="friendship">Friendship<br>      
         <input disabled type="checkbox" name="character_power" value="famous">Famous<br>          
     </fieldset>   
-  <!-- @keyup.enter="$emit('add-new-character')" -->
   <button @click="$emit('add-new-character')" style="margin-top: 20px;">Add new character</button>
 </div>
 </template>

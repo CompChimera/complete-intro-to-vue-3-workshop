@@ -8,8 +8,8 @@ export default {
   },
   emits: ['favourite'],
   methods: {
-    favouriteCharacter(favouriteAdd, event) {
-        this.$emit('favourite', this.character)
+    favouriteCharacter() {
+          this.$emit('favourite', this.character)
         },
     }
 }

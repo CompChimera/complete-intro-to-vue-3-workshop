@@ -1,6 +1,7 @@
 <script >
 import CharacterCard from './components/CharacterCard.vue'
 import AddCharacter from './components/AddCharacter.vue'
+import BaseLayout from './components/BaseLayout.vue'
 
 
 export default {
@@ -47,48 +48,60 @@ export default {
             this.favouriteList.push(character);
         }
     },
-    components: { CharacterCard, AddCharacter, }
+    components: { BaseLayout, CharacterCard, AddCharacter, }
 }
 </script>
 
 <template>
- <h2>Statistics</h2>
+  <BaseLayout>
+    <template v-slot:sidebar>
+      <h2> Character Lists </h2>
+      <div class="list-wrapper" 
+        style="display: flex; flex-direction: column; max-width: 500px; gap: 20px;">
+          <div class="char-list" style="background-color: #d3d3d3; padding: 10px;">
+            <span style="font-weight: bold;">List of Characters:</span>
+            <p>
+              <span v-for="(character, index) in charactersList" :key="`listing-character-${index}`">
+                {{ character.name }}{{ index === charactersList.length - 1 ? '' : ', ' }} 
+                </span>
+            </p>
+          </div>
+          <div class="fav-list" style="background-color: #d3d3d3; padding: 10px;">
+            <span style="font-weight: bold;">List of Favourite Characters:</span>
+            <p>
+              <span v-if="favouriteList.length > 0" v-for="(character, index) in favouriteList" :key="`fav-character-${index}`">
+                {{ character.name }}{{ index === favouriteList.length - 1 ? '' : ', ' }} 
+                </span>
+                <span v-else>There are no favourites :( </span>
+            </p>
+          </div>
+        </div> <!-- End List wrapper-->
+    </template>
+    <template v-slot:main>
+      <h2 v-if="charactersList.length > 0">Main Characters: </h2>
+      <h2 v-else>Characters: To be announced!</h2>
+      <div>
 
-<ul>
-  <li v-for="(stat, type) in powerStatistics" :key="`character-${stat}-${type}`"> <span>{{ type[0].toUpperCase() + type.substring(1) }} : {{ stat }} </span></li>
-</ul>
+        <div v-if="charactersList.length > 0" v-for="(character, index) in charactersList" :key="`character-${index}`"> 
+          <CharacterCard :character="character" @favourite="addFavouriteCharacter"/>
+        </div> 
+        <AddCharacter :charactersList="charactersList" :newCharacter="newCharacter" @add-new-character="addNewCharacter"/>
 
-<h2 v-if="charactersList.length > 0">Main Characters: </h2>
-  <h2 v-else>Characters: To be announced!</h2>
-  <div>
+      </div>
+    </template>
+    <template v-slot:footer>
+      <h2>Statistics</h2>
+      <ul>
+        <li v-for="(stat, type) in powerStatistics" :key="`character-${stat}-${type}`"> <span>{{ type[0].toUpperCase() + type.substring(1) }} : {{ stat }} </span></li>
+      </ul>
 
-    <div v-if="charactersList.length > 0" v-for="(character, index) in charactersList" :key="`character-${index}`"> 
-      <CharacterCard :character="character" @favourite="addFavouriteCharacter"/>
-    </div> 
-  </div>
+    </template>
+  </BaseLayout>
 
-<AddCharacter :charactersList="charactersList" :newCharacter="newCharacter" @add-new-character="addNewCharacter"/>
 
-<div class="list-wrapper" 
-style="display: flex; flex-direction: column; max-width: 500px; gap: 20px;">
-  <div class="char-list" style="background-color: #d3d3d3; padding: 10px;">
-    <span style="font-weight: bold;">List of Characters:</span>
-    <p>
-      <span v-for="(character, index) in charactersList" :key="`listing-character-${index}`">
-         {{ character.name }}{{ index === charactersList.length - 1 ? '' : ', ' }} 
-        </span>
-    </p>
-  </div>
-  <div class="fav-list" style="background-color: #d3d3d3; padding: 10px;">
-    <span style="font-weight: bold;">List of Favourite Characters:</span>
-    <p>
-      <span v-if="favouriteList.length > 0" v-for="(character, index) in favouriteList" :key="`fav-character-${index}`">
-         {{ character.name }}{{ index === favouriteList.length - 1 ? '' : ', ' }} 
-        </span>
-        <span v-else>There are no favourites :( </span>
-    </p>
-  </div>
-</div> <!-- End List wrapper-->
+
+
+
 </template>
 
 <style>
