@@ -45,8 +45,13 @@ export default {
     </nav>
   </header>
   <!-- <button @click="fetchUsers">Fetch Users</button> -->
+  <Suspense>
+    <component :is="renderPage" />
 
-  <component :is="renderPage" />
+    <template v-slot:fallback>
+      Loading ...
+    </template>
+  </Suspense>
 
   <!-- <HomePage v-if="currentPage === 'Home'" /> -->
   <!-- <HomePage v-else-if="currentPage === 'Users'" /> -->

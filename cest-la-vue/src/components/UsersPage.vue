@@ -1,26 +1,37 @@
-<script>
-export default {
-  data:() => ({
-    userList: []
-  }),
-  methods: {
-    async fetchUsers() {
-      //https://jsonplaceholder.typicode.com/users
-      this.userList = await fetch('https://jsonplaceholder.typicode.com/users').then(response => response.json())
+<script setup>
+import {computed, ref} from "vue";
+
+   async function fetchUsers() { 
+      const response = await fetch('https://jsonplaceholder.typicode.com/users').then(response => response.json())
+      return response; 
+    };
+
+    const favUsers = ref([1, 3])
+    const userList = await fetchUsers();
+
+   function isUserFavouriteClass(userId) {
+      if(this.favUsers.indexOf(userId) >= 0 ){
+        return 'fav-user';
+      }
     }
-  },
-  created() {
-      this.fetchUsers()
+    function addFavouriteUser(userId){
+      this.favUsers.push(userId); 
     }
-}
 </script>
 
 <template>
   <main>
     <h1>User Page</h1>
 
-    <div v-for="user in this.userList" :key="`user-${user.id}`" style="display:flex; justify-content: center; padding-top: 20px;">
+    <div v-for="user in this.userList" :key="`user-${user.id}`" style="display:flex; justify-content: flex-start; padding-top: 20px;">
       {{ user.name }}
+      <div v-if="isUserFavouriteClass(user.id)" style="margin-left: auto">
+        ⭐
+      </div>
+      <div v-else  style="margin-left: auto">
+        <button @click="addFavouriteUser(user.id)">Add to Favs</button>
+        <button @click="addFavouriteUser(user.id)">Add to Favs</button>
+      </div>
     </div>
   </main>
 </template>
